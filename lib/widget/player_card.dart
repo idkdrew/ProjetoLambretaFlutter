@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 class PlayerCard extends StatelessWidget {
   final String name;
   final String position;
-  final int ovr;
+  final int? ovr; // Parâmetro opcional
+  final int? goals; // Parâmetro opcional
+  final int? assists; // Parâmetro opcional
 
   const PlayerCard({
     super.key,
     required this.name,
     required this.position,
-    required this.ovr,
+    this.ovr,
+    this.goals,
+    this.assists,
   });
 
   @override
@@ -28,8 +32,16 @@ class PlayerCard extends StatelessWidget {
                 Text(position),
               ],
             ),
-            Text('$ovr OVR',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            if (ovr != null) // Exibe o OVR apenas se ele estiver disponível
+              Text('$ovr OVR', style: const TextStyle(fontWeight: FontWeight.bold)),
+            if (goals != null && assists != null) // Exibe gols e assistências apenas se ambos estiverem disponíveis
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('$goals G', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text('$assists A', style: const TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
           ],
         ),
       ),

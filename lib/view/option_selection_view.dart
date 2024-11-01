@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projetolambreta/view/team_view.dart';
 import 'package:projetolambreta/view/results_view.dart';
-// import 'package:projetolambreta/view/statistics_view.dart';
+import 'package:projetolambreta/view/statistics_view.dart';
 import 'package:projetolambreta/widget/custom_app_bar.dart';
 import '../widget/career_card.dart';
 
@@ -60,7 +60,7 @@ class OptionSelectionView extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => TeamScreen()),
+                        MaterialPageRoute(builder: (context) => StatisticsScreen()),
                       );
                     },
                   ),

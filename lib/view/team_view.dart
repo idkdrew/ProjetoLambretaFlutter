@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetolambreta/widget/custom_app_bar.dart';
+import 'package:projetolambreta/view/new_player_view.dart';
 import '../widget/player_card.dart';
 import '../widget/custom_button.dart';
 
@@ -55,7 +56,11 @@ class TeamScreen extends StatelessWidget {
               child: CustomButton(
                 text: 'Novo Jogador',
                 onPressed: () {
-                  // Ação para adicionar um novo jogador
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NewPlayerScreen()),
+                  );
                 },
               ),
             ),

@@ -1,5 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:projetolambreta/view/statistics_view.dart';
 import 'view/option_selection_view.dart';
 import 'view/login_view.dart';
 import 'view/team_selection_view.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/team': (context) => TeamScreen(),
         '/career': (context) => SelectionScreen(),
         '/menu': (context) => OptionSelectionView(),
+        '/statistics': (context) => StatisticsScreen(),
       },
     );
   }

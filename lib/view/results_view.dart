@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetolambreta/view/team_view.dart';
-// import 'package:projetolambreta/view/results_view.dart';
+import 'package:projetolambreta/view/new_results_view.dart';
 // import 'package:projetolambreta/view/statistics_view.dart';
 import 'package:projetolambreta/widget/custom_app_bar.dart';
 import '../widget/results_card.dart';
@@ -86,7 +86,10 @@ class ResultsView extends StatelessWidget {
               child: CustomButton(
                 text: 'Novo resultado',
                 onPressed: () {
-                  // Ação para iniciar uma nova carreira
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NewResultScreen()),
+                  );
                 },
               ),
             )

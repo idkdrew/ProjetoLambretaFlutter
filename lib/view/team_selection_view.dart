@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projetolambreta/view/option_selection_view.dart';
+import 'package:projetolambreta/view/new_team_view.dart';
 import 'package:projetolambreta/widget/custom_app_bar.dart';
 import '../widget/career_card.dart';
 import '../widget/custom_button.dart';
@@ -69,7 +70,10 @@ class SelectionScreen extends StatelessWidget {
               child: CustomButton(
                 text: 'Nova Carreira',
                 onPressed: () {
-                  // Ação para iniciar uma nova carreira
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => NewTeamScreen()),
+                  );
                 },
               ),
             ),
