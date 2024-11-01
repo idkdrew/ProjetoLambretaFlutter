@@ -4,10 +4,12 @@ import '../widget/player_card.dart';
 import '../widget/custom_button.dart';
 
 class TeamScreen extends StatelessWidget {
+  const TeamScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE0E0E0),
+      backgroundColor: const Color(0xFFE0E0E0),
       appBar: CustomAppBar(title: "Time"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -22,8 +24,8 @@ class TeamScreen extends StatelessWidget {
                   'https://logodetimes.com/times/corinthians/logo-corinthians-512.png',
                   height: 50,
                 ),
-                SizedBox(width: 8),
-                Text(
+                const SizedBox(width: 8),
+                const Text(
                   'SC Corinthians Paulista',
                   style: TextStyle(
                     fontSize: 24,
@@ -33,12 +35,12 @@ class TeamScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Lista de jogadores
             Expanded(
               child: ListView(
-                children: [
+                children: const [
                   PlayerCard(name: 'Hugo Souza', position: 'GOL', ovr: 75),
                   PlayerCard(name: 'André Ramalho', position: 'ZAG', ovr: 79),
                   PlayerCard(name: 'Rodrigo Garro', position: 'MEI', ovr: 80),

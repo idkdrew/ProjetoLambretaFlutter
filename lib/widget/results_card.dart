@@ -7,7 +7,8 @@ class ResultsCard extends StatelessWidget {
   final int awayTeamGoals; // Número de gols do time visitante
   final VoidCallback onTap; // Ação a ser realizada ao clicar no card
 
-  ResultsCard({
+  const ResultsCard({
+    super.key,
     required this.homeTeamLogo,
     required this.awayTeamLogo,
     required this.homeTeamGoals,
@@ -23,7 +24,7 @@ class ResultsCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          color: Color(0xFFCCE5FF),
+          color: const Color(0xFFCCE5FF),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -34,12 +35,13 @@ class ResultsCard extends StatelessWidget {
               homeTeamLogo,
               height: 40,
               width: 40,
-              errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.error),
             ),
             // Resultado no centro
             Text(
               '$homeTeamGoals x $awayTeamGoals', // Mostra os gols no formato "3 x 0"
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF3366CC),
@@ -50,7 +52,8 @@ class ResultsCard extends StatelessWidget {
               awayTeamLogo,
               height: 40,
               width: 40,
-              errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+              errorBuilder: (context, error, stackTrace) =>
+                  const Icon(Icons.error),
             ),
           ],
         ),

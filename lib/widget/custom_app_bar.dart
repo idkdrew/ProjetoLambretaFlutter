@@ -4,7 +4,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Color backgroundColor;
 
-  CustomAppBar({
+  const CustomAppBar({
+    super.key,
     required this.title,
     this.backgroundColor = const Color(0xFF3366CC),
   });
@@ -18,5 +19,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

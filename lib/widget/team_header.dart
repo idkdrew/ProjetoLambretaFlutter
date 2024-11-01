@@ -5,10 +5,10 @@ class TeamHeader extends StatelessWidget {
   final String logoUrl;
 
   const TeamHeader({
-    Key? key,
+    super.key,
     required this.teamName,
     required this.logoUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,12 @@ class TeamHeader extends StatelessWidget {
           logoUrl,
           width: 50,
           height: 50,
-          errorBuilder: (context, error, stackTrace) => Icon(Icons.error),
+          errorBuilder: (context, error, stackTrace) => const Icon(Icons.error),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         Text(
           teamName,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ],
     );

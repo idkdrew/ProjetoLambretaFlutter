@@ -7,18 +7,20 @@ import '../widget/results_card.dart';
 import '../widget/custom_button.dart';
 
 class ResultsView extends StatelessWidget {
+  const ResultsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE0E0E0),
+      backgroundColor: const Color(0xFFE0E0E0),
       appBar: CustomAppBar(title: "Resultados"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Selecionar Opção',
               style: TextStyle(
                 fontSize: 24,
@@ -27,7 +29,7 @@ class ResultsView extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Lista de opções
             Expanded(

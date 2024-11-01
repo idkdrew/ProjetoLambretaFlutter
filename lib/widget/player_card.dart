@@ -6,11 +6,11 @@ class PlayerCard extends StatelessWidget {
   final int ovr;
 
   const PlayerCard({
-    Key? key,
+    super.key,
     required this.name,
     required this.position,
     required this.ovr,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +24,12 @@ class PlayerCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
                 Text(position),
               ],
             ),
-            Text('$ovr OVR', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('$ovr OVR',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
       ),

@@ -5,18 +5,20 @@ import '../widget/career_card.dart';
 import '../widget/custom_button.dart';
 
 class SelectionScreen extends StatelessWidget {
+  const SelectionScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE0E0E0),
+      backgroundColor: const Color(0xFFE0E0E0),
       appBar: CustomAppBar(title: "Carreiras"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Selecionar Carreira',
               style: TextStyle(
                 fontSize: 24,
@@ -25,7 +27,7 @@ class SelectionScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Lista de carreiras
             Expanded(

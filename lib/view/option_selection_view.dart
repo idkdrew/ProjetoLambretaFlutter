@@ -6,18 +6,20 @@ import 'package:projetolambreta/widget/custom_app_bar.dart';
 import '../widget/career_card.dart';
 
 class OptionSelectionView extends StatelessWidget {
+  const OptionSelectionView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE0E0E0),
+      backgroundColor: const Color(0xFFE0E0E0),
       appBar: CustomAppBar(title: "Seleção de Opções"),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Selecionar Opção',
               style: TextStyle(
                 fontSize: 24,
@@ -26,7 +28,7 @@ class OptionSelectionView extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Lista de opções
             Expanded(

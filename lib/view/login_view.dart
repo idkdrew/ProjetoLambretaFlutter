@@ -3,10 +3,12 @@ import '../widget/custom_button.dart';
 import 'team_selection_view.dart'; // Importe a próxima tela
 
 class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE0E0E0),
+      backgroundColor: const Color(0xFFE0E0E0),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -14,7 +16,7 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Lambreta',
                   style: TextStyle(
                     fontSize: 24,
@@ -22,22 +24,22 @@ class LoginScreen extends StatelessWidget {
                     color: Color(0xFF3366CC),
                   ),
                 ),
-                SizedBox(height: 40),
-                TextField(
+                const SizedBox(height: 40),
+                const TextField(
                   decoration: InputDecoration(
                     labelText: 'Login',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16),
-                TextField(
+                const SizedBox(height: 16),
+                const TextField(
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Senha',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 CustomButton(
                   text: 'Entrar',
                   onPressed: () {
