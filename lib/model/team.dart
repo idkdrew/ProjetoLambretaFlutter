@@ -1,5 +1,3 @@
-import '../model/player.dart';
-
 class Team {
   final int id;
   final String login;
@@ -14,5 +12,4 @@ class Team {
     required this.name,
     required this.date,
   });
-
 }
