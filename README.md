@@ -1,16 +1,14 @@
-# lambreta
+# Projeto Lambreta Dispositivos Móveis
 
-A new Flutter project.
+## Informações e Instruções
 
-## Getting Started
+Para rodar o código corretamente deve-se instalar o flutter e preparar o ambiente de desenvolvimento assim como indica no seguinte link (https://fragrant-chanter-261.notion.site/Configura-o-do-Flutter-519beb36ba2a49b3876bb098af556c7a)
 
-This project is a starting point for a Flutter application.
+Feito todas as configurações indicadas ao abrir o projeto clicar para ser feito o pub-get para atualizar todos os pacotes.
 
-A few resources to get you started if this is your first Flutter project:
+Após isso. selecionar em qual ambiente irá rodar e executar o código.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tarefas Realizadas por cada aluno
+### Andrew e Gabriel: Criação de Páginas e Widgets
+### Cássio: Repositories e Controllers.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
