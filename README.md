@@ -1,16 +1,8 @@
-# lambreta
+O projeto para ser rodado deve ser clonado o repositório no vscode ou alguma IDE de preferência, e baixar as dependências (pub-get) conforme for indicado pela própria.
 
-A new Flutter project.
+A segunda parte consiste na continuação da primeira entrega, com diferença no armazenamento de dados que é feito utilizando firebase realtime database e firebase authentication. 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Durante a realização do projeto cada aluno ficou responsável pelas seguintes partes: 
+Cassio: Banco de Dados.
+Gabriel: Autenticação e auxilio nas melhorias visuais.
+Andrew: Melhorias visuais e auxilio na autenticação.
