@@ -4,16 +4,29 @@ import '../repository/player_repository.dart';
 class PlayerController {
   static int playerSelected = 0;
 
-  List<Player> fetchPlayers() {
-    return PlayerRepository.getPlayers();
+  Future<List<Player>> fetchPlayers() async {
+    try {
+      return await PlayerRepository.getPlayers();
+    } catch (e) {
+      return [];
+    }
   }
 
-  Player? getPlayerSelected() {
-    return PlayerRepository.getPlayerById(playerSelected);
+  Future<void> createPlayer(String name, String position, int ovr) async {
+    try {
+      await PlayerRepository.createPlayer(name, position, ovr);
+    } catch (e) {
+
+    }
   }
 
-  void createPlayer(String name, String position, int ovr) {
-    PlayerRepository.createPlayer(name, position, ovr);
+  Future<Player?> selectPlayerById(int id) async {
+    try {
+      playerSelected = id;
+      return await PlayerRepository.getPlayerById(id);
+    } catch (e) {
+      print("Erro ao selecionar jogador: $e");
+      return null;
+    }
   }
-
 }

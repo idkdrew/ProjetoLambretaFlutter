@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
@@ -13,6 +14,7 @@ class PlayerListPage extends StatefulWidget {
 class _PlayerListPage extends State<PlayerListPage> {
   final PlayerController playerController = PlayerController();
   List<Player> players = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -20,10 +22,26 @@ class _PlayerListPage extends State<PlayerListPage> {
     fetchPlayers();
   }
 
-  void fetchPlayers() {
+  Future<void> fetchPlayers() async {
+    if (!mounted) return;
     setState(() {
-      players = playerController.fetchPlayers();
+      isLoading = true;
     });
+    try {
+      final fetchPlayers = await playerController.fetchPlayers();
+      if (mounted) {
+        setState(() {
+          players = fetchPlayers;
+        });
+      }
+    } catch (e) {
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   void navigateToCreatePlayer() async {
@@ -38,15 +56,19 @@ class _PlayerListPage extends State<PlayerListPage> {
     Navigator.pushNamed(context, '/team/player/view');
   }
 
+  void logout() async {
+    await FirebaseAuth.instance.signOut().then((user) => {
+          CustomSnackBarError.show(context, "Saindo!"),
+          Navigator.pushReplacementNamed(context, '/'),
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Elenco",
-        onLogout: () {
-          Navigator.pushReplacementNamed(context, '/');
-          CustomSnackBarSucess.show(context, "Saindo!");
-        },
+        onLogout: logout,
       ),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Padding(
@@ -57,20 +79,31 @@ class _PlayerListPage extends State<PlayerListPage> {
             CustomSizedBox(),
             CustomTitle(text: 'Elenco'),
             CustomSizedBox(),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: players.length,
-                  itemBuilder: (context, index) {
-                    final player = players[index];
-                    return PlayerCard(
-                        name: player.name,
-                        position: player.position,
-                        ovr: player.ovr,
-                        onTap: () {
-                          navigateToPlayer(player.id);
-                        });
-                  }),
-            ),
+            isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : players.isEmpty
+                    ? const Center(
+                        child: Text(
+                          "Nenhum jogador encontrado.",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                            itemCount: players.length,
+                            itemBuilder: (context, index) {
+                              final player = players[index];
+                              return PlayerCard(
+                                  name: player.name,
+                                  position: player.position,
+                                  ovr: player.ovr,
+                                  onTap: () {
+                                    navigateToPlayer(player.id);
+                                  });
+                            }),
+                      ),
             CustomSizedBox(),
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),

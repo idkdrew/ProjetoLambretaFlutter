@@ -1,17 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
 
-import '../controller/user_controller.dart';
 
 class LoginPage extends StatefulWidget {
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final UserController userController = UserController();
+
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -22,14 +21,24 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.text = "";
   }
 
-  void login() {
-      bool login = userController.login(loginController.text, passwordController.text);
-      if(login){
-        CustomSnackBarSucess.show(context, "Usuário logado com sucesso!");
-        Navigator.pushReplacementNamed(context, '/team');
-      }else{
+  void loginFireBase() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: loginController.text,
+        password: passwordController.text,
+      );
+      Navigator.pushReplacementNamed(context, '/');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        CustomSnackBarError.show(context, "Usuário não encontrado!");
+      } else if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
         CustomSnackBarError.show(context, "Credenciais Incorretas!");
+      } else if (e.code == 'invalid-email') {
+        CustomSnackBarError.show(context, "E-mail inválido!");
       }
+    } catch (e) {
+      CustomSnackBarError.show(context, "Erro ao tentar fazer login.");
+    }
   }
 
   void navigateToCreateUser() {
@@ -42,35 +51,31 @@ class _LoginPageState extends State<LoginPage> {
       appBar: CustomLoginAppBar(title: "Lambreta"),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CustomSizedBox(),
-                CustomInput(
-                    label: 'Login',
-                    controller: loginController
-                ),
-                CustomSizedBox(),
-                CustomInput(
-                    label: 'Senha',
-                    obscure: true,
-                    controller: passwordController
-                ),
-                CustomSizedBox(),
-                CustomButton(
-                  text: 'Entrar',
-                  onPressed: login,
-                ),
-                CustomSizedBox(),
-                CustomButton(
-                  text: 'Não tenho Conta',
-                  onPressed: navigateToCreateUser,
-                ),
-              ],
-            ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CustomSizedBox(),
+              CustomInput(label: 'E-Mail', controller: loginController),
+              CustomSizedBox(),
+              CustomInput(
+                  label: 'Senha',
+                  obscure: true,
+                  controller: passwordController),
+              CustomSizedBox(),
+              CustomButton(
+                text: 'Entrar',
+                onPressed: loginFireBase,
+              ),
+              CustomSizedBox(),
+              CustomButton(
+                text: 'Não tenho Conta',
+                onPressed: navigateToCreateUser,
+              ),
+            ],
           ),
+        ),
       ),
     );
   }

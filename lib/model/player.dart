@@ -12,4 +12,24 @@ class Player {
     required this.position,
     required this.ovr
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'idTeam': idTeam,
+      'name': name,
+      'position': position,
+      'ovr': ovr,
+    };
+  }
+
+  factory Player.fromMap(Map<String, dynamic> map) {
+    return Player(
+      id: map['id'],
+      idTeam: map['idTeam'],
+      name: map['name'],
+      position: map['position'],
+      ovr: map['ovr'],
+    );
+  }
 }

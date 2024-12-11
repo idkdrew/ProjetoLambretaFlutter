@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart'; // Import necessário para suporte a múltiplas localizações
+import 'package:lambreta/firebase_options.dart';
 import 'page/register_user_page.dart';
 import 'page/team_form_page.dart';
 import 'page/team_selection_page.dart';
 import 'page/team_options_page.dart';
+import 'page/check_user_page.dart';
 import 'page/login_page.dart';
 import 'page/player_page.dart';
 import 'page/player_list_page.dart';
@@ -13,7 +16,12 @@ import 'page/result_list_page.dart';
 import 'page/result_form_page.dart';
 import 'page/statistic_list_page.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+
+  );
   runApp(MyApp());
 }
 
@@ -35,7 +43,8 @@ class MyApp extends StatelessWidget {
         const Locale('pt', ''), // Português
       ],
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => CheckUserPage(),
+        '/login': (context) => LoginPage(),
         '/register': (context) => RegisterUserPage(),
         '/team': (context) => TeamSelectionPage(),
         '/team/create': (context) => TeamFormPage(),

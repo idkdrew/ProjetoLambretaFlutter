@@ -4,20 +4,36 @@ import '../repository/result_repository.dart';
 class ResultController {
   static int resultSelected = 0;
 
-  List<Result> fetchResults() {
-    return ResultRepository.getResults();
+  Future<List<Result>> fetchResults() async {
+    try {
+      return await ResultRepository.getResults();
+    } catch (e) {
+      return [];
+    }
   }
 
-  Result? getResultSelected() {
-    return ResultRepository.getResultById(resultSelected);
+  Future<int> getLastId() async {
+    try {
+      return await ResultRepository.getLastId();
+    } catch (e) {
+      return 1;
+    }
   }
 
-  int getLastId(){
-    return ResultRepository.getLastId();
+  Future<void> createResult(bool isHome, int idTeamOpponent, int homeGoal, int awayGoal) async {
+    try {
+      await ResultRepository.createResult(isHome, idTeamOpponent, homeGoal, awayGoal);
+    } catch (e) {
+
+    }
   }
 
-  void createResult(bool isHome, int idTeamOpponent, int homeGoal, int awayGoal) {
-    ResultRepository.createResult(isHome, idTeamOpponent, homeGoal, awayGoal);
+  Future<Result?> getResultSelected() async {
+    try {
+      return await ResultRepository.getResultById(resultSelected);
+    } catch (e) {
+      print("Erro ao selecionar resultado: $e");
+      return null;
+    }
   }
-
 }

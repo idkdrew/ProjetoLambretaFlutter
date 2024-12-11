@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
@@ -13,6 +14,7 @@ class ResultListPage extends StatefulWidget {
 class _ResultListPage extends State<ResultListPage> {
   final ResultController resultController = ResultController();
   List<Result> results = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -20,10 +22,26 @@ class _ResultListPage extends State<ResultListPage> {
     fetchResults();
   }
 
-  void fetchResults() {
+  Future<void> fetchResults() async {
+    if (!mounted) return;
     setState(() {
-      results = resultController.fetchResults();
+      isLoading = true;
     });
+    try {
+      final fetchResults = await resultController.fetchResults();
+      if (mounted) {
+        setState(() {
+          results = fetchResults;
+        });
+      }
+    } catch (e) {
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   void navigateToCreateResult() async {
@@ -38,15 +56,20 @@ class _ResultListPage extends State<ResultListPage> {
     Navigator.pushNamed(context, '/team/result/view');
   }
 
+  void logout() async {
+    await FirebaseAuth.instance.signOut().then((user) => {
+      CustomSnackBarError.show(context, "Saindo!"),
+      Navigator.pushReplacementNamed(context, '/'),
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Resultados",
-        onLogout: () {
-          Navigator.pushReplacementNamed(context, '/');
-          CustomSnackBarSucess.show(context, "Saindo!");
-        },
+        onLogout: logout,
       ),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Padding(
@@ -57,6 +80,18 @@ class _ResultListPage extends State<ResultListPage> {
             CustomSizedBox(),
             CustomTitle(text: 'Resultados'),
             CustomSizedBox(),
+            isLoading
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+                : results.isEmpty
+                ? const Center(
+              child: Text(
+                "Nenhum resultado encontrado.",
+                style: TextStyle(fontSize: 16),
+              ),
+            )
+                :
             Expanded(
               child: ListView.builder(
                   itemCount: results.length,

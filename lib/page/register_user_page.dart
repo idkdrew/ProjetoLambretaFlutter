@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
 
 import '../controller/user_controller.dart';
-
 
 class RegisterUserPage extends StatefulWidget {
   @override
@@ -14,30 +14,36 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
   final UserController userController = UserController();
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     loginController.text = "";
     passwordController.text = "";
-    confirmPasswordController.text = "";
   }
 
-  void register() {
-    if(loginController.text.isEmpty || passwordController.text.isEmpty || confirmPasswordController.text.isEmpty){
+
+
+  void registerFireBase() async {
+    if (loginController.text.isEmpty || passwordController.text.isEmpty) {
       CustomSnackBarError.show(context, "Preencha todos os campos!");
-    }
-    if(passwordController.text == confirmPasswordController.text){
-      bool create = userController.createUser(loginController.text, passwordController.text);
-      if(create){
-        CustomSnackBarSucess.show(context, "Usuário criado com sucesso!");
-        Navigator.of(context).pop();
-      }else{
-        CustomSnackBarError.show(context, "Usuário Existente!");
+    } else {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: loginController.text, password: passwordController.text);
+        Navigator.pushReplacementNamed(context, '/');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'invalid-email') {
+          CustomSnackBarError.show(context, "E-mail inválido!");
+        }else  if (e.code == 'email-already-in-use') {
+          CustomSnackBarError.show(context, "Usuário Existente!");
+        }else if (e.code == 'weak-password') {
+          CustomSnackBarError.show(
+              context, "Senha muito curta, no mínimo 6 caracteres!");
+        }
+      } catch (e) {
+        CustomSnackBarError.show(context, "Erro ao tentar fazer login.");
       }
-    }else{
-      CustomSnackBarError.show(context, "As senhas não coincidem!");
     }
   }
 
@@ -53,26 +59,16 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomSizedBox(),
-              CustomInput(
-                  label: 'Login',
-                  controller: loginController
-              ),
-              CustomSizedBox(),
-              CustomInput(
-                obscure: true,
-                  label: 'Senha',
-                  controller: passwordController
-              ),
+              CustomInput(label: 'E-Mail', controller: loginController),
               CustomSizedBox(),
               CustomInput(
                   obscure: true,
-                  label: 'Confirmar Senha',
-                  controller: confirmPasswordController
-              ),
+                  label: 'Senha',
+                  controller: passwordController),
               CustomSizedBox(),
               CustomButton(
                 text: 'Cadastrar Usuário',
-                onPressed: register,
+                onPressed: registerFireBase,
               ),
             ],
           ),

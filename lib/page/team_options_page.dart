@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
@@ -29,15 +30,20 @@ class _TeamOptionsPage extends State<TeamOptionsPage> {
     Navigator.pushNamed(context, '/team/statistic');
   }
 
+  void logout() async {
+    await FirebaseAuth.instance.signOut().then((user) => {
+      CustomSnackBarError.show(context, "Saindo!"),
+      Navigator.pushReplacementNamed(context, '/'),
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Opções",
-        onLogout: () {
-          Navigator.pushReplacementNamed(context, '/');
-          CustomSnackBarSucess.show(context, "Saindo!");
-        },
+        onLogout: logout,
       ),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Padding(

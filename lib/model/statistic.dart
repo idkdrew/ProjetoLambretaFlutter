@@ -12,4 +12,25 @@ class Statistic {
     required this.goal,
     required this.assist
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'idResult': idResult,
+      'idPlayer': idPlayer,
+      'goal': goal,
+      'assist': assist,
+    };
+  }
+
+  factory Statistic.fromMap(Map<String, dynamic> map) {
+    return Statistic(
+      id: map['id'],
+      idResult: map['idResult'],
+      idPlayer: map['idPlayer'],
+      goal: map['goal'],
+      assist: map['assist'],
+    );
+  }
+
 }

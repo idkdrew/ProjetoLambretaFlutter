@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../model/player.dart';
@@ -16,6 +17,8 @@ class _ResultFormPage extends State<ResultFormPage> {
   final ResultController resultController = ResultController();
   final PlayerController playerController = PlayerController();
   final StatisticController statisticController = StatisticController();
+
+  bool isLoading = true;
 
   final List<String> options = ['Casa', 'Visitante'];
   final List<bool> selectedOption = <bool>[true, false];
@@ -37,14 +40,31 @@ class _ResultFormPage extends State<ResultFormPage> {
     fetchPlayers();
   }
 
-  void fetchPlayers() {
+
+  Future<void> fetchPlayers() async {
+    if (!mounted) return;
     setState(() {
-      players = playerController.fetchPlayers();
-      for (var player in players) {
-        playerGoals[player.id] = 0;
-        playerAssists[player.id] = 0;
-      }
+      isLoading = true;
     });
+    try {
+      final fetchPlayers = await playerController.fetchPlayers();
+      if (mounted) {
+        setState(() {
+          players = fetchPlayers;
+          for (var player in players) {
+            playerGoals[player.id] = 0;
+            playerAssists[player.id] = 0;
+          }
+        });
+      }
+    } catch (e) {
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   void updatePlayerGoal(int idPlayer, int goal) {
@@ -59,16 +79,39 @@ class _ResultFormPage extends State<ResultFormPage> {
     });
   }
 
-  void create() {
-    if (homeGoalController.text.isEmpty || awayGoalController.text.isEmpty) {
+  void create() async {
+    if(homeGoalController.text.isEmpty || awayGoalController.text.isEmpty){
       CustomSnackBarError.show(context, "Preencha todos os campos!");
+      return;
     }
-    resultController.createResult(isHome, 0, int.parse(homeGoalController.text), int.parse(awayGoalController.text));
-    players.forEach((player){
-      statisticController.createStatistic(resultController.getLastId(), player.id, playerGoals[player.id] ?? 0, playerAssists[player.id] ?? 0);
+
+    try {
+      await resultController.createResult(isHome, 0, int.parse(homeGoalController.text), int.parse(awayGoalController.text));
+      int lastId = await resultController.getLastId();
+
+      for (var player in players) {
+        await statisticController.createStatistic(
+          lastId,
+          player.id,
+          playerGoals[player.id] ?? 0,
+          playerAssists[player.id] ?? 0,
+        );
+      }
+      CustomSnackBarSucess.show(context, "Resultado adicionado!");
+
+      setState(() {});
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      CustomSnackBarError.show(context, "Erro ao adicionar resultado !");
+    }
+  }
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut().then((user) => {
+      CustomSnackBarError.show(context, "Saindo!"),
+      Navigator.pushReplacementNamed(context, '/'),
+
     });
-    CustomSnackBarSucess.show(context, "Resultado adicionado!");
-    Navigator.of(context).pop(true);
   }
 
   @override
@@ -76,10 +119,7 @@ class _ResultFormPage extends State<ResultFormPage> {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Novo Resultado",
-        onLogout: () {
-          Navigator.pushReplacementNamed(context, '/');
-          CustomSnackBarSucess.show(context, "Saindo!");
-        },
+        onLogout: logout,
       ),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Padding(

@@ -1,4 +1,5 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
@@ -33,13 +34,30 @@ class _PlayerFormPage extends State<PlayerFormPage> {
     ovrController.text = "";
   }
 
-  void create() {
+  void create() async {
     if(nameController.text.isEmpty || selectedPosition!.isEmpty || ovrController.text.isEmpty){
       CustomSnackBarError.show(context, "Preencha todos os campos!");
+      return;
     }
-    playerController.createPlayer(nameController.text, selectedPosition!, int.parse(ovrController.text));
-    CustomSnackBarSucess.show(context, "Jogador adicionado!");
-    Navigator.of(context).pop(true);
+
+    try {
+      await playerController.createPlayer(nameController.text, selectedPosition!, int.parse(ovrController.text));
+      CustomSnackBarSucess.show(context, "Jogador adicionado!");
+
+      setState(() {});
+      Navigator.of(context).pop(true);
+    } catch (e) {
+      CustomSnackBarError.show(context, "Erro ao adicionar jogador!");
+    }
+  }
+
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut().then((user) => {
+      CustomSnackBarError.show(context, "Saindo!"),
+      Navigator.pushReplacementNamed(context, '/'),
+
+    });
   }
 
   @override
@@ -47,10 +65,7 @@ class _PlayerFormPage extends State<PlayerFormPage> {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Novo Jogador",
-        onLogout: () {
-          Navigator.pushReplacementNamed(context, '/');
-          CustomSnackBarSucess.show(context, "Saindo!");
-        },
+        onLogout: logout,
       ),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Padding(

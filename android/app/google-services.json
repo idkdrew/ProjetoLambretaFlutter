@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "658888084828",
+    "firebase_url": "https://lambreta-cga-default-rtdb.firebaseio.com",
+    "project_id": "lambreta-cga",
+    "storage_bucket": "lambreta-cga.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658888084828:android:7dc677181dda7aa3008599",
+        "android_client_info": {
+          "package_name": "com.cga"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVRb49cRDnHcfxnmBZeACjt9vtWMkPwM0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

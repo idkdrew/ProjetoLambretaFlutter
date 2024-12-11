@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/custom_widgets.dart';
-
 import '../controller/player_controller.dart';
 import '../controller/statistic_controller.dart';
 import '../model/player.dart';
@@ -15,6 +15,8 @@ class StatisticListPage extends StatefulWidget {
 class _StatisticListPage extends State<StatisticListPage> {
   final PlayerController playerController = PlayerController();
   final StatisticController statisticController = StatisticController();
+  bool isLoading = true;
+
   List<Player> players = [];
   Map<int, int> appearances = {};
   Map<int, int> goals = {};
@@ -26,16 +28,42 @@ class _StatisticListPage extends State<StatisticListPage> {
     fetchPlayersAndStatistics();
   }
 
-  void fetchPlayersAndStatistics() {
+  Future<void> fetchPlayersAndStatistics() async {
+    if (!mounted) return;
     setState(() {
-      players = playerController.fetchPlayers();
-      players.forEach((player){
-        List<Statistic> statistics = statisticController.fetchStatisticsByPlayer(player.id);
-        appearances[player.id] = statistics.length;
-        goals[player.id] = statistics.fold(0, (goals, statistic) => goals + statistic.goal);
-        assists[player.id] = statistics.fold(0, (assists, statistic) => assists + statistic.assist);
-      });
+      isLoading = true;
     });
+
+    try {
+      final fetchPlayers = await playerController.fetchPlayers();
+
+      if (fetchPlayers != null && fetchPlayers.isNotEmpty) {
+        setState(() {
+          players = fetchPlayers;
+        });
+
+        for (var player in players) {
+          List<Statistic> statistics = await statisticController.fetchStatisticsByPlayer(player.id);
+
+          appearances[player.id] = statistics.length;
+          goals[player.id] = statistics.fold(0, (goals, statistic) => goals + statistic.goal);
+          assists[player.id] = statistics.fold(0, (assists, statistic) => assists + statistic.assist);
+        }
+      } else {
+        setState(() {
+          players = []; // Caso não haja jogadores
+        });
+      }
+    } catch (e) {
+      CustomSnackBarError.show(context, "Erro ao carregar jogadores.");
+      print("Erro ao carregar jogadores: $e");
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   void navigateToPlayer(int id) {
@@ -43,15 +71,19 @@ class _StatisticListPage extends State<StatisticListPage> {
     Navigator.pushNamed(context, '/team/player/view');
   }
 
+  void logout() async {
+    await FirebaseAuth.instance.signOut().then((user) => {
+      CustomSnackBarError.show(context, "Saindo!"),
+      Navigator.pushReplacementNamed(context, '/'),
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Estatistícas",
-        onLogout: () {
-          Navigator.pushReplacementNamed(context, '/');
-          CustomSnackBarSucess.show(context, "Saindo!");
-        },
+        onLogout: logout,
       ),
       backgroundColor: const Color(0xFFE0E0E0),
       body: Padding(
@@ -62,7 +94,18 @@ class _StatisticListPage extends State<StatisticListPage> {
             CustomSizedBox(),
             CustomTitle(text: 'Estatistícas'),
             CustomSizedBox(),
-            Expanded(
+            isLoading
+                ? const Center(
+              child: CircularProgressIndicator(),
+            )
+                : players.isEmpty
+                ? const Center(
+              child: Text(
+                "Nenhum jogador encontrado.",
+                style: TextStyle(fontSize: 16),
+              ),
+            )
+                : Expanded(
               child: ListView.builder(
                   itemCount: players.length,
                   itemBuilder: (context, index) {

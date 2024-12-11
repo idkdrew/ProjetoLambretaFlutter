@@ -1,0 +1,25 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "lambreta-cga",
+          "appId": "1:658888084828:android:7dc677181dda7aa3008599",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "lambreta-cga",
+          "configurations": {
+            "android": "1:658888084828:android:7dc677181dda7aa3008599",
+            "ios": "1:658888084828:ios:c40c14b138eeea36008599",
+            "macos": "1:658888084828:ios:c40c14b138eeea36008599",
+            "web": "1:658888084828:web:c97b1913b0a1711f008599",
+            "windows": "1:658888084828:web:949f168ef267e99a008599"
+          }
+        }
+      }
+    }
+  }
+}
